@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 class="subtitle">Storyboard</h2>
+<form method="post">
+    <div class="field">
+        <label class="label">Location</label>
+        <div class="select">
+            <select name="location">
+                {% for l in locations %}
+                <option value="{{ l.id }}">{{ l.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+    <div class="field">
+        <label class="label">Characters</label>
+        {% for c in characters %}
+        <label class="checkbox">
+            <input type="checkbox" name="characters" value="{{ c.id }}"> {{ c.name }}
+        </label>
+        {% endfor %}
+    </div>
+    <button class="button is-primary" type="submit">Generate Frame</button>
+</form>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 class="subtitle">Episode {{ episode.id }} - {{ episode.title }}</h2>
+<ul>
+{% for scene in episode.scenes %}
+    <li>Scene {{ scene.id }} - Location {{ scene.location_id }} - Characters {{ scene.character_ids | join(', ') }} - {{ scene.description }}</li>
+{% endfor %}
+</ul>
+<h3 class="subtitle">Add Scene</h3>
+<form method="post" action="{{ url_for('add_scene', ep_id=episode.id) }}">
+    <div class="field">
+        <label class="label">Location</label>
+        <div class="select">
+            <select name="location" required>
+                {% for l in locations %}
+                <option value="{{ l.id }}">{{ l.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+    <div class="field">
+        <label class="label">Characters</label>
+        {% for c in characters %}
+        <label class="checkbox">
+            <input type="checkbox" name="characters" value="{{ c.id }}">
+            {{ c.name }}
+        </label>
+        {% endfor %}
+    </div>
+    <div class="field">
+        <label class="label">Description</label>
+        <textarea class="textarea" name="description"></textarea>
+    </div>
+    <button class="button is-primary" type="submit">Add Scene</button>
+</form>
+{% endblock %}

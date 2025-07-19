@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 class="subtitle">Characters</h2>
+<form method="post">
+    <div class="field">
+        <label class="label">Name</label>
+        <input class="input" type="text" name="name" required>
+    </div>
+    <div class="field">
+        <label class="label">Age</label>
+        <input class="input" type="number" name="age" required>
+    </div>
+    <div class="field">
+        <label class="label">Occupation</label>
+        <input class="input" type="text" name="occupation" required>
+    </div>
+    <div class="field">
+        <label class="label">Bio</label>
+        <textarea class="textarea" name="bio" required></textarea>
+    </div>
+    <button class="button is-primary" type="submit">Add Character</button>
+</form>
+<table class="table is-fullwidth">
+<thead>
+<tr><th>Name</th><th>Age</th><th>Occupation</th><th>Bio</th></tr>
+</thead>
+<tbody>
+{% for c in characters %}
+<tr><td>{{ c.name }}</td><td>{{ c.age }}</td><td>{{ c.occupation }}</td><td>{{ c.bio }}</td></tr>
+{% endfor %}
+</tbody>
+</table>
+{% endblock %}
