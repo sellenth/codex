@@ -4,8 +4,9 @@ import {
   Users, 
   MapPin, 
   Film, 
-  Clapperboard, 
+  Clapperboard,
   Settings,
+  Sparkles,
   Heart
 } from 'lucide-react'
 
@@ -14,6 +15,7 @@ const navigation = [
   { name: 'Locations', href: '/locations', icon: MapPin },
   { name: 'Episodes', href: '/episodes', icon: Film },
   { name: 'Storyboard', href: '/storyboard', icon: Clapperboard },
+  { name: 'fal.ai', href: '/fal', icon: Sparkles },
   { name: 'Settings', href: '/settings', icon: Settings },
 ]
 
