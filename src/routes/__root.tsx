@@ -25,8 +25,8 @@ export const Route = createRootRoute({
         content: 'width=device-width, initial-scale=1',
       },
       ...seo({
-        title: 'Love Island Storyboard - Production Tool',
-        description: 'Storyboarding and production tool for Love Island episodes',
+        title: 'Attraction Island Storyboard - Production Tool',
+        description: 'Storyboarding and production tool for Attraction Island episodes',
       }),
     ],
     links: [
