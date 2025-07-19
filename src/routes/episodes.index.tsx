@@ -143,7 +143,7 @@ function EpisodesPage() {
                   </div>
                   <div className="flex items-center gap-1">
                     <Clock className="h-3 w-3" />
-                    {episode.scenes.length} scenes
+                    {episode.scenes?.length || 0} scenes
                   </div>
                 </div>
                 <Link
