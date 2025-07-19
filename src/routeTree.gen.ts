@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as StoryboardRouteImport } from './routes/storyboard'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as LocationsRouteImport } from './routes/locations'
+import { Route as FalRouteImport } from './routes/fal'
 import { Route as CharactersRouteImport } from './routes/characters'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as EpisodesIndexRouteImport } from './routes/episodes.index'
@@ -35,6 +36,11 @@ const SettingsRoute = SettingsRouteImport.update({
 const LocationsRoute = LocationsRouteImport.update({
   id: '/locations',
   path: '/locations',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FalRoute = FalRouteImport.update({
+  id: '/fal',
+  path: '/fal',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CharactersRoute = CharactersRouteImport.update({
@@ -86,6 +92,7 @@ const CharactersCharacterIdRoute = CharactersCharacterIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/characters': typeof CharactersRouteWithChildren
+  '/fal': typeof FalRoute
   '/locations': typeof LocationsRouteWithChildren
   '/settings': typeof SettingsRoute
   '/storyboard': typeof StoryboardRoute
@@ -100,6 +107,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/characters': typeof CharactersRouteWithChildren
+  '/fal': typeof FalRoute
   '/locations': typeof LocationsRouteWithChildren
   '/settings': typeof SettingsRoute
   '/storyboard': typeof StoryboardRoute
@@ -115,6 +123,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/characters': typeof CharactersRouteWithChildren
+  '/fal': typeof FalRoute
   '/locations': typeof LocationsRouteWithChildren
   '/settings': typeof SettingsRoute
   '/storyboard': typeof StoryboardRoute
@@ -131,6 +140,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/characters'
+    | '/fal'
     | '/locations'
     | '/settings'
     | '/storyboard'
@@ -145,6 +155,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/characters'
+    | '/fal'
     | '/locations'
     | '/settings'
     | '/storyboard'
@@ -159,6 +170,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/characters'
+    | '/fal'
     | '/locations'
     | '/settings'
     | '/storyboard'
@@ -174,6 +186,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CharactersRoute: typeof CharactersRouteWithChildren
+  FalRoute: typeof FalRoute
   LocationsRoute: typeof LocationsRouteWithChildren
   SettingsRoute: typeof SettingsRoute
   StoryboardRoute: typeof StoryboardRoute
@@ -203,6 +216,13 @@ declare module '@tanstack/react-router' {
       path: '/locations'
       fullPath: '/locations'
       preLoaderRoute: typeof LocationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/fal': {
+      id: '/fal'
+      path: '/fal'
+      fullPath: '/fal'
+      preLoaderRoute: typeof FalRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/characters': {
@@ -302,6 +322,7 @@ const LocationsRouteWithChildren = LocationsRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CharactersRoute: CharactersRouteWithChildren,
+  FalRoute: FalRoute,
   LocationsRoute: LocationsRouteWithChildren,
   SettingsRoute: SettingsRoute,
   StoryboardRoute: StoryboardRoute,
