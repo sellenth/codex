@@ -50,7 +50,7 @@ function FalPage() {
       if (model.aspectRatios) {
         input.aspect_ratio = aspect
       }
-      const result = await fal.run(model.id, { input })
+      const result = await fal.run(model.id, { input }) as any
       console.log('Fal AI response:', result)
       
       // Handle different response formats
