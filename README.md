@@ -16,6 +16,7 @@ Codex is an example storyboard and production tool built with **React 19**, **Ta
    npx convex dev
    cp .env.example .env
    # Edit .env and set VITE_CONVEX_URL to the URL printed by the command above
+   # Optionally set VITE_FAL_KEY to use fal.ai without configuring settings
    ```
 
 3. Generate Convex TypeScript bindings:
