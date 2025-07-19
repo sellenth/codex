@@ -25,7 +25,7 @@ export function Layout() {
           <div className="flex h-16 items-center justify-between">
             <Link to="/" className="flex items-center gap-2">
               <Heart className="h-6 w-6 text-pink-500" />
-              <span className="text-xl font-bold">Love Island Storyboard</span>
+              <span className="text-xl font-bold">Attraction Island Storyboard</span>
             </Link>
             
             <nav className="flex items-center gap-6">

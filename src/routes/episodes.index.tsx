@@ -18,7 +18,7 @@ function EpisodesPage() {
       id: '1',
       number: 1,
       title: 'Dustin Intro',
-      description: 'Meet Dustin, our first contestant arriving at the Love Island villa.',
+      description: 'Meet Dustin, our first contestant arriving at the Attraction Island villa.',
       scenes: [],
       status: 'completed',
       airDate: '2024-01-15',

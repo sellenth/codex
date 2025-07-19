@@ -26,9 +26,9 @@ function Home() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-4xl font-bold">Love Island Storyboard</h1>
+        <h1 className="text-4xl font-bold">Attraction Island Storyboard</h1>
         <p className="text-muted-foreground mt-2">
-          Production management tool for creating Love Island episodes
+          Production management tool for creating Attraction Island episodes
         </p>
       </div>
 
