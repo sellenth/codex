@@ -112,6 +112,14 @@ function RootDocument({ children }: { children: React.ReactNode }) {
             Deferred
           </Link>{' '}
           <Link
+            to="/remotion-demo"
+            activeProps={{
+              className: 'font-bold',
+            }}
+          >
+            Remotion Demo
+          </Link>{' '}
+          <Link
             // @ts-expect-error
             to="/this-route-does-not-exist"
             activeProps={{
