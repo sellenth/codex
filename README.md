@@ -70,3 +70,37 @@ pnpm dev
 
 > [!WARNING]
 > You will need to update the `docs/config.json` file (in the project's repo) if you add a new doc page!
+
+## Using Convex with TanStack Start
+
+This project includes a basic Convex setup for storing data. To get started:
+
+1. Install the Convex CLI and initialize a new deployment:
+
+   ```bash
+   npx convex dev
+   ```
+
+   This command will walk you through creating a Convex account and project. When it finishes it prints a deployment URL like `https://happy-turtle-123.convex.cloud`.
+
+2. Copy `.env.example` to `.env` and set `VITE_CONVEX_URL` to the deployment URL:
+
+   ```bash
+   cp .env.example .env
+   echo "VITE_CONVEX_URL=\"https://YOUR_DEPLOYMENT.convex.cloud\"" > .env
+   ```
+
+3. Generate TypeScript bindings for your Convex functions:
+
+   ```bash
+   pnpm convex:codegen
+   ```
+
+4. Start the Convex dev server alongside the Vite dev server:
+
+   ```bash
+   pnpm convex # in one terminal
+   pnpm dev    # in another terminal
+   ```
+
+Now the React app will use Convex for loading episode data. Check `convex/` for example schema and functions.

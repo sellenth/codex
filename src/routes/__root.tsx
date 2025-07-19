@@ -9,6 +9,8 @@ import * as React from 'react'
 import { DefaultCatchBoundary } from '~/components/DefaultCatchBoundary'
 import { NotFound } from '~/components/NotFound'
 import { Layout } from '~/components/Layout'
+import { ConvexProvider } from 'convex/react'
+import { convex } from '~/convexClient'
 import appCss from '~/styles/app.css?url'
 import { seo } from '~/utils/seo'
 
@@ -63,7 +65,9 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body>
-        <Layout />
+        <ConvexProvider client={convex}>
+          <Layout />
+        </ConvexProvider>
         <TanStackRouterDevtools position="bottom-right" />
         <Scripts />
       </body>

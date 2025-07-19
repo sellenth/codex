@@ -5,14 +5,15 @@ import { Button } from '@/components/ui/button'
 import { Plus, Film, Calendar, Clock } from 'lucide-react'
 import { Link } from '@tanstack/react-router'
 import type { Episode } from '@/types/storyboard'
+import { useEpisodes } from '@/hooks/useEpisodes'
 
 export const Route = createFileRoute('/episodes')({
   component: EpisodesPage,
 })
 
 function EpisodesPage() {
-  // Mock data for now
-  const episodes: Episode[] = [
+  const episodes = useEpisodes() as Episode[] | undefined
+  const mockEpisodes: Episode[] = [
     {
       id: '1',
       number: 1,
@@ -64,6 +65,8 @@ function EpisodesPage() {
     },
   ]
 
+  const episodesToShow = episodes ?? mockEpisodes
+
   const getStatusColor = (status: Episode['status']) => {
     switch (status) {
       case 'planning':
@@ -100,7 +103,7 @@ function EpisodesPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {episodes.map((episode) => (
+        {episodesToShow.map((episode) => (
           <Card key={episode.id} className="overflow-hidden hover:shadow-lg transition-shadow">
             <div className="flex">
               <div className="w-48 h-32 bg-gray-100 flex-shrink-0">
