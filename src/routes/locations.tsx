@@ -1,60 +1,17 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Plus, MapPin } from 'lucide-react'
 import type { Location } from '@/types/storyboard'
+import { useLocations } from '@/hooks/useLocations'
 
 export const Route = createFileRoute('/locations')({
   component: LocationsPage,
 })
 
 function LocationsPage() {
-  // Mock data for now
-  const locations: Location[] = [
-    {
-      id: '1',
-      name: 'Kitchen',
-      description: 'Modern open-plan kitchen with island counter, perfect for cooking dates and morning chats.',
-      imageUrl: 'https://via.placeholder.com/400x300',
-      ambiance: 'casual',
-    },
-    {
-      id: '2',
-      name: 'Backyard',
-      description: 'Spacious outdoor area with lounge seating, fire pit, and string lights for evening gatherings.',
-      imageUrl: 'https://via.placeholder.com/400x300',
-      ambiance: 'romantic',
-    },
-    {
-      id: '3',
-      name: 'Pool',
-      description: 'Infinity pool with sun loungers and cabanas. The heart of daytime activities.',
-      imageUrl: 'https://via.placeholder.com/400x300',
-      ambiance: 'fun',
-    },
-    {
-      id: '4',
-      name: 'Beach',
-      description: 'Private beach access with pristine sand and crystal-clear water for romantic walks.',
-      imageUrl: 'https://via.placeholder.com/400x300',
-      ambiance: 'romantic',
-    },
-    {
-      id: '5',
-      name: 'Fire Pit',
-      description: 'Cozy fire pit area surrounded by comfortable seating for deep conversations.',
-      imageUrl: 'https://via.placeholder.com/400x300',
-      ambiance: 'dramatic',
-    },
-    {
-      id: '6',
-      name: 'Bedroom',
-      description: 'Shared bedroom with multiple beds and private corners for intimate moments.',
-      imageUrl: 'https://via.placeholder.com/400x300',
-      ambiance: 'romantic',
-    },
-  ]
+  const locations = useLocations() as Location[] | undefined
 
   const getAmbianceColor = (ambiance: Location['ambiance']) => {
     switch (ambiance) {
@@ -78,15 +35,17 @@ function LocationsPage() {
             Available shooting locations for scenes
           </p>
         </div>
-        <Button>
-          <Plus className="mr-2 h-4 w-4" />
-          Add Location
-        </Button>
+        <Link to="/locations/new">
+          <Button>
+            <Plus className="mr-2 h-4 w-4" />
+            Add Location
+          </Button>
+        </Link>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {locations.map((location) => (
-          <Card key={location.id} className="overflow-hidden hover:shadow-lg transition-shadow">
+        {(locations ?? []).map((location) => (
+          <Card key={(location as any)._id} className="overflow-hidden hover:shadow-lg transition-shadow">
             <div className="aspect-[4/3] relative bg-gray-100">
               {location.imageUrl ? (
                 <img
@@ -112,9 +71,9 @@ function LocationsPage() {
               <CardDescription className="line-clamp-2">
                 {location.description}
               </CardDescription>
-              <Button variant="outline" className="w-full mt-4">
-                View Details
-              </Button>
+              <Link to="/locations/$locationId" params={{ locationId: (location as any)._id }} className="w-full mt-4 inline-block">
+                <Button variant="outline" className="w-full">View Details</Button>
+              </Link>
             </CardContent>
           </Card>
         ))}

@@ -10,4 +10,18 @@ export default defineSchema({
     airDate: v.optional(v.string()),
     thumbnailUrl: v.optional(v.string()),
   }),
+  characters: defineTable({
+    name: v.string(),
+    age: v.number(),
+    occupation: v.string(),
+    bio: v.string(),
+    imageUrl: v.optional(v.string()),
+    status: v.string(),
+  }),
+  locations: defineTable({
+    name: v.string(),
+    description: v.string(),
+    imageUrl: v.optional(v.string()),
+    ambiance: v.string(),
+  }),
 })

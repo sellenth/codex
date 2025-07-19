@@ -1,63 +1,17 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Plus, User } from 'lucide-react'
 import type { Character } from '@/types/storyboard'
+import { useCharacters } from '@/hooks/useCharacters'
 
 export const Route = createFileRoute('/characters')({
   component: CharactersPage,
 })
 
 function CharactersPage() {
-  // Mock data for now
-  const characters: Character[] = [
-    {
-      id: '1',
-      name: 'Dustin',
-      age: 25,
-      occupation: 'Personal Trainer',
-      bio: 'Fitness enthusiast looking for his perfect match. Loves adventure and spontaneous trips.',
-      imageUrl: 'https://via.placeholder.com/300x400',
-      status: 'single',
-    },
-    {
-      id: '2',
-      name: 'Maya',
-      age: 23,
-      occupation: 'Social Media Influencer',
-      bio: 'Living life to the fullest! Looking for someone who can keep up with my energy.',
-      imageUrl: 'https://via.placeholder.com/300x400',
-      status: 'single',
-    },
-    {
-      id: '3',
-      name: 'Blake',
-      age: 27,
-      occupation: 'Entrepreneur',
-      bio: 'Built my own business from scratch. Now looking to build something special with someone.',
-      imageUrl: 'https://via.placeholder.com/300x400',
-      status: 'single',
-    },
-    {
-      id: '4',
-      name: 'Sofia',
-      age: 24,
-      occupation: 'Fashion Designer',
-      bio: 'Creative soul with a passion for style. Seeking someone who appreciates the finer things.',
-      imageUrl: 'https://via.placeholder.com/300x400',
-      status: 'single',
-    },
-    {
-      id: '5',
-      name: 'Tyler',
-      age: 26,
-      occupation: 'Professional Surfer',
-      bio: 'Beach lover and thrill seeker. Looking for someone to ride the waves of life with.',
-      imageUrl: 'https://via.placeholder.com/300x400',
-      status: 'single',
-    },
-  ]
+  const characters = useCharacters() as Character[] | undefined
 
   const getStatusColor = (status: Character['status']) => {
     switch (status) {
@@ -79,15 +33,17 @@ function CharactersPage() {
             Manage contestant profiles and information
           </p>
         </div>
-        <Button>
-          <Plus className="mr-2 h-4 w-4" />
-          Add Character
-        </Button>
+        <Link to="/characters/new">
+          <Button>
+            <Plus className="mr-2 h-4 w-4" />
+            Add Character
+          </Button>
+        </Link>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {characters.map((character) => (
-          <Card key={character.id} className="overflow-hidden hover:shadow-lg transition-shadow">
+        {(characters ?? []).map((character) => (
+          <Card key={(character as any)._id} className="overflow-hidden hover:shadow-lg transition-shadow">
             <div className="aspect-[3/4] relative bg-gray-100">
               {character.imageUrl ? (
                 <img
@@ -116,9 +72,9 @@ function CharactersPage() {
               <p className="text-sm text-muted-foreground line-clamp-3">
                 {character.bio}
               </p>
-              <Button variant="outline" className="w-full mt-4">
-                View Profile
-              </Button>
+              <Link to="/characters/$characterId" params={{ characterId: (character as any)._id }} className="w-full mt-4 inline-block">
+                <Button variant="outline" className="w-full">View Profile</Button>
+              </Link>
             </CardContent>
           </Card>
         ))}

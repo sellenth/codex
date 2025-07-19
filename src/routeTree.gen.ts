@@ -15,8 +15,12 @@ import { Route as LocationsRouteImport } from './routes/locations'
 import { Route as CharactersRouteImport } from './routes/characters'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as EpisodesIndexRouteImport } from './routes/episodes.index'
+import { Route as LocationsNewRouteImport } from './routes/locations/new'
+import { Route as LocationsLocationIdRouteImport } from './routes/locations.$locationId'
 import { Route as EpisodesNewRouteImport } from './routes/episodes/new'
 import { Route as EpisodesEpisodeIdRouteImport } from './routes/episodes.$episodeId'
+import { Route as CharactersNewRouteImport } from './routes/characters/new'
+import { Route as CharactersCharacterIdRouteImport } from './routes/characters.$characterId'
 
 const StoryboardRoute = StoryboardRouteImport.update({
   id: '/storyboard',
@@ -48,6 +52,16 @@ const EpisodesIndexRoute = EpisodesIndexRouteImport.update({
   path: '/episodes/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LocationsNewRoute = LocationsNewRouteImport.update({
+  id: '/new',
+  path: '/new',
+  getParentRoute: () => LocationsRoute,
+} as any)
+const LocationsLocationIdRoute = LocationsLocationIdRouteImport.update({
+  id: '/$locationId',
+  path: '/$locationId',
+  getParentRoute: () => LocationsRoute,
+} as any)
 const EpisodesNewRoute = EpisodesNewRouteImport.update({
   id: '/episodes/new',
   path: '/episodes/new',
@@ -58,36 +72,58 @@ const EpisodesEpisodeIdRoute = EpisodesEpisodeIdRouteImport.update({
   path: '/episodes/$episodeId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CharactersNewRoute = CharactersNewRouteImport.update({
+  id: '/new',
+  path: '/new',
+  getParentRoute: () => CharactersRoute,
+} as any)
+const CharactersCharacterIdRoute = CharactersCharacterIdRouteImport.update({
+  id: '/$characterId',
+  path: '/$characterId',
+  getParentRoute: () => CharactersRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/characters': typeof CharactersRoute
-  '/locations': typeof LocationsRoute
+  '/characters': typeof CharactersRouteWithChildren
+  '/locations': typeof LocationsRouteWithChildren
   '/settings': typeof SettingsRoute
   '/storyboard': typeof StoryboardRoute
+  '/characters/$characterId': typeof CharactersCharacterIdRoute
+  '/characters/new': typeof CharactersNewRoute
   '/episodes/$episodeId': typeof EpisodesEpisodeIdRoute
   '/episodes/new': typeof EpisodesNewRoute
+  '/locations/$locationId': typeof LocationsLocationIdRoute
+  '/locations/new': typeof LocationsNewRoute
   '/episodes': typeof EpisodesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/characters': typeof CharactersRoute
-  '/locations': typeof LocationsRoute
+  '/characters': typeof CharactersRouteWithChildren
+  '/locations': typeof LocationsRouteWithChildren
   '/settings': typeof SettingsRoute
   '/storyboard': typeof StoryboardRoute
+  '/characters/$characterId': typeof CharactersCharacterIdRoute
+  '/characters/new': typeof CharactersNewRoute
   '/episodes/$episodeId': typeof EpisodesEpisodeIdRoute
   '/episodes/new': typeof EpisodesNewRoute
+  '/locations/$locationId': typeof LocationsLocationIdRoute
+  '/locations/new': typeof LocationsNewRoute
   '/episodes': typeof EpisodesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/characters': typeof CharactersRoute
-  '/locations': typeof LocationsRoute
+  '/characters': typeof CharactersRouteWithChildren
+  '/locations': typeof LocationsRouteWithChildren
   '/settings': typeof SettingsRoute
   '/storyboard': typeof StoryboardRoute
+  '/characters/$characterId': typeof CharactersCharacterIdRoute
+  '/characters/new': typeof CharactersNewRoute
   '/episodes/$episodeId': typeof EpisodesEpisodeIdRoute
   '/episodes/new': typeof EpisodesNewRoute
+  '/locations/$locationId': typeof LocationsLocationIdRoute
+  '/locations/new': typeof LocationsNewRoute
   '/episodes/': typeof EpisodesIndexRoute
 }
 export interface FileRouteTypes {
@@ -98,8 +134,12 @@ export interface FileRouteTypes {
     | '/locations'
     | '/settings'
     | '/storyboard'
+    | '/characters/$characterId'
+    | '/characters/new'
     | '/episodes/$episodeId'
     | '/episodes/new'
+    | '/locations/$locationId'
+    | '/locations/new'
     | '/episodes'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -108,8 +148,12 @@ export interface FileRouteTypes {
     | '/locations'
     | '/settings'
     | '/storyboard'
+    | '/characters/$characterId'
+    | '/characters/new'
     | '/episodes/$episodeId'
     | '/episodes/new'
+    | '/locations/$locationId'
+    | '/locations/new'
     | '/episodes'
   id:
     | '__root__'
@@ -118,15 +162,19 @@ export interface FileRouteTypes {
     | '/locations'
     | '/settings'
     | '/storyboard'
+    | '/characters/$characterId'
+    | '/characters/new'
     | '/episodes/$episodeId'
     | '/episodes/new'
+    | '/locations/$locationId'
+    | '/locations/new'
     | '/episodes/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  CharactersRoute: typeof CharactersRoute
-  LocationsRoute: typeof LocationsRoute
+  CharactersRoute: typeof CharactersRouteWithChildren
+  LocationsRoute: typeof LocationsRouteWithChildren
   SettingsRoute: typeof SettingsRoute
   StoryboardRoute: typeof StoryboardRoute
   EpisodesEpisodeIdRoute: typeof EpisodesEpisodeIdRoute
@@ -178,6 +226,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EpisodesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/locations/new': {
+      id: '/locations/new'
+      path: '/new'
+      fullPath: '/locations/new'
+      preLoaderRoute: typeof LocationsNewRouteImport
+      parentRoute: typeof LocationsRoute
+    }
+    '/locations/$locationId': {
+      id: '/locations/$locationId'
+      path: '/$locationId'
+      fullPath: '/locations/$locationId'
+      preLoaderRoute: typeof LocationsLocationIdRouteImport
+      parentRoute: typeof LocationsRoute
+    }
     '/episodes/new': {
       id: '/episodes/new'
       path: '/episodes/new'
@@ -192,13 +254,55 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EpisodesEpisodeIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/characters/new': {
+      id: '/characters/new'
+      path: '/new'
+      fullPath: '/characters/new'
+      preLoaderRoute: typeof CharactersNewRouteImport
+      parentRoute: typeof CharactersRoute
+    }
+    '/characters/$characterId': {
+      id: '/characters/$characterId'
+      path: '/$characterId'
+      fullPath: '/characters/$characterId'
+      preLoaderRoute: typeof CharactersCharacterIdRouteImport
+      parentRoute: typeof CharactersRoute
+    }
   }
 }
 
+interface CharactersRouteChildren {
+  CharactersCharacterIdRoute: typeof CharactersCharacterIdRoute
+  CharactersNewRoute: typeof CharactersNewRoute
+}
+
+const CharactersRouteChildren: CharactersRouteChildren = {
+  CharactersCharacterIdRoute: CharactersCharacterIdRoute,
+  CharactersNewRoute: CharactersNewRoute,
+}
+
+const CharactersRouteWithChildren = CharactersRoute._addFileChildren(
+  CharactersRouteChildren,
+)
+
+interface LocationsRouteChildren {
+  LocationsLocationIdRoute: typeof LocationsLocationIdRoute
+  LocationsNewRoute: typeof LocationsNewRoute
+}
+
+const LocationsRouteChildren: LocationsRouteChildren = {
+  LocationsLocationIdRoute: LocationsLocationIdRoute,
+  LocationsNewRoute: LocationsNewRoute,
+}
+
+const LocationsRouteWithChildren = LocationsRoute._addFileChildren(
+  LocationsRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  CharactersRoute: CharactersRoute,
-  LocationsRoute: LocationsRoute,
+  CharactersRoute: CharactersRouteWithChildren,
+  LocationsRoute: LocationsRouteWithChildren,
   SettingsRoute: SettingsRoute,
   StoryboardRoute: StoryboardRoute,
   EpisodesEpisodeIdRoute: EpisodesEpisodeIdRoute,
