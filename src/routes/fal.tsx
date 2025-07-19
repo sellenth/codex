@@ -42,7 +42,16 @@ function FalPage() {
     setLoading(true)
     setError(null)
     setResultUrl(null)
-    fal.config({ credentials: getApiKey('falai') as string })
+    
+    const apiKey = getApiKey('falai')
+    if (!apiKey) {
+      setError('FAL API key not found. Please add it in Settings.')
+      setLoading(false)
+      return
+    }
+    
+    fal.config({ credentials: apiKey })
+    
     try {
       const input: any = { prompt }
       if (model.supportsImage && imageFile) {
