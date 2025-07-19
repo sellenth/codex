@@ -16,8 +16,10 @@ interface ModelOption {
 }
 
 const models: ModelOption[] = [
-  { id: 'fal-ai/kontext-pro', label: 'Kontext Pro', supportsImage: false },
-  { id: 'fal-ai/fast-flux', label: 'Fast FLUX', supportsImage: true, aspectRatios: ['1:1', '16:9', '9:16'] },
+  { id: 'fal-ai/flux-pro/kontext', label: 'FLUX.1 Kontext Pro', supportsImage: true },
+  { id: 'fal-ai/flux-pro', label: 'FLUX.1 Pro', supportsImage: false, aspectRatios: ['1:1', '16:9', '9:16', '4:3', '3:4'] },
+  { id: 'fal-ai/flux/schnell', label: 'FLUX.1 Schnell (Fast)', supportsImage: false, aspectRatios: ['1:1', '16:9', '9:16', '4:3', '3:4'] },
+  { id: 'fal-ai/flux/dev', label: 'FLUX.1 Dev', supportsImage: false, aspectRatios: ['1:1', '16:9', '9:16', '4:3', '3:4'] },
 ]
 
 export const Route = createFileRoute('/fal')({
@@ -32,10 +34,13 @@ function FalPage() {
   const [aspect, setAspect] = useState(model.aspectRatios ? model.aspectRatios[0] : '')
   const [resultUrl, setResultUrl] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
+    setError(null)
+    setResultUrl(null)
     fal.config({ credentials: import.meta.env.VITE_FAL_KEY as string })
     try {
       const input: any = { prompt }
@@ -45,12 +50,29 @@ function FalPage() {
       if (model.aspectRatios) {
         input.aspect_ratio = aspect
       }
-      const { data } = await fal.run(model.id, { input })
-      if (data && (data.image_url || data.output)) {
-        setResultUrl(data.image_url ?? data.output)
+      const result = await fal.run(model.id, { input })
+      console.log('Fal AI response:', result)
+      
+      // Handle different response formats
+      if (result.images && result.images.length > 0) {
+        setResultUrl(result.images[0].url)
+      } else if (result.image) {
+        setResultUrl(result.image.url || result.image)
+      } else if (result.data) {
+        const { data } = result
+        if (data.images && data.images.length > 0) {
+          setResultUrl(data.images[0].url)
+        } else if (data.image_url || data.output) {
+          setResultUrl(data.image_url || data.output)
+        }
+      } else if (result.output) {
+        setResultUrl(result.output)
+      } else if (result.image_url) {
+        setResultUrl(result.image_url)
       }
     } catch (err) {
-      console.error(err)
+      console.error('Fal AI error:', err)
+      setError(err instanceof Error ? err.message : 'An error occurred')
     } finally {
       setLoading(false)
     }
@@ -127,6 +149,17 @@ function FalPage() {
           </form>
         </CardContent>
       </Card>
+
+      {error && (
+        <Card className="border-destructive">
+          <CardHeader>
+            <CardTitle className="text-destructive">Error</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-destructive">{error}</p>
+          </CardContent>
+        </Card>
+      )}
 
       {resultUrl && (
         <Card>
