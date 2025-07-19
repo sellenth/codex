@@ -7,7 +7,7 @@ import { Link } from '@tanstack/react-router'
 import type { Episode } from '@/types/storyboard'
 import { useEpisodes } from '@/hooks/useEpisodes'
 
-export const Route = createFileRoute('/episodes')({
+export const Route = createFileRoute('/episodes/')({
   component: EpisodesPage,
 })
 
@@ -96,10 +96,12 @@ function EpisodesPage() {
             Manage and track episode production
           </p>
         </div>
-        <Button>
-          <Plus className="mr-2 h-4 w-4" />
-          New Episode
-        </Button>
+        <Link to="/episodes/new">
+          <Button>
+            <Plus className="mr-2 h-4 w-4" />
+            New Episode
+          </Button>
+        </Link>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
