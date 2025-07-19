@@ -8,30 +8,17 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Save, TestTube, Key } from 'lucide-react'
 import { useState } from 'react'
 import type { GenerationSettings } from '@/types/storyboard'
+import { getStoredSettings, saveSettings } from '@/utils/settings'
 
 export const Route = createFileRoute('/settings')({
   component: SettingsPage,
 })
 
 function SettingsPage() {
-  const [settings, setSettings] = useState<GenerationSettings>({
-    mockMode: true,
-    apiKeys: {
-      openai: '',
-      anthropic: '',
-      elevenlabs: '',
-      falai: '',
-    },
-    defaultModels: {
-      chat: 'openai',
-      speech: 'elevenlabs',
-      image: 'falai',
-      video: 'falai',
-    },
-  })
+  const [settings, setSettings] = useState<GenerationSettings>(() => getStoredSettings())
 
   const handleSave = () => {
-    // In a real app, save to localStorage or backend
+    saveSettings(settings)
     console.log('Saving settings:', settings)
   }
 

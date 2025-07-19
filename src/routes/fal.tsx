@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { fal } from '@fal-ai/client'
+import { getApiKey } from '@/utils/settings'
 
 interface ModelOption {
   id: string
@@ -41,7 +42,7 @@ function FalPage() {
     setLoading(true)
     setError(null)
     setResultUrl(null)
-    fal.config({ credentials: import.meta.env.VITE_FAL_KEY as string })
+    fal.config({ credentials: getApiKey('falai') as string })
     try {
       const input: any = { prompt }
       if (model.supportsImage && imageFile) {
