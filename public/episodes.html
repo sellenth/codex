@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Episodes</title>
+</head>
+<body>
+  <h1>Episodes</h1>
+  <ul id="list"></ul>
+  <script>
+    fetch('/api/episodes')
+      .then(r => r.json())
+      .then(eps => {
+        const list = document.getElementById('list');
+        eps.forEach(e => {
+          const li = document.createElement('li');
+          li.textContent = e.title;
+          list.appendChild(li);
+        });
+      });
+  </script>
+</body>
+</html>

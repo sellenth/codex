@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Locations</title>
+</head>
+<body>
+  <h1>Locations</h1>
+  <ul id="list"></ul>
+  <script>
+    fetch('/api/locations')
+      .then(r => r.json())
+      .then(locs => {
+        const list = document.getElementById('list');
+        locs.forEach(l => {
+          const li = document.createElement('li');
+          li.textContent = l.name;
+          list.appendChild(li);
+        });
+      });
+  </script>
+</body>
+</html>

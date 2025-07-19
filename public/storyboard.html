@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Storyboard</title>
+</head>
+<body>
+  <h1>Create Scene</h1>
+  <form id="sceneForm">
+    <fieldset>
+      <legend>Characters</legend>
+      <div id="characters"></div>
+    </fieldset>
+    <label>Location
+      <select id="location"></select>
+    </label>
+    <br />
+    <label>Description
+      <input type="text" id="description" />
+    </label>
+    <br />
+    <button type="submit">Create Scene</button>
+  </form>
+  <h2>Scenes</h2>
+  <ul id="scenes"></ul>
+<script>
+function loadChars() {
+  fetch('/api/characters')
+    .then(r => r.json())
+    .then(chars => {
+      const div = document.getElementById('characters');
+      chars.forEach(c => {
+        const label = document.createElement('label');
+        const cb = document.createElement('input');
+        cb.type = 'checkbox';
+        cb.value = c.id;
+        label.appendChild(cb);
+        label.appendChild(document.createTextNode(c.name));
+        div.appendChild(label);
+      });
+    });
+}
+function loadLocations() {
+  fetch('/api/locations')
+    .then(r => r.json())
+    .then(locs => {
+      const sel = document.getElementById('location');
+      locs.forEach(l => {
+        const opt = document.createElement('option');
+        opt.value = l.id;
+        opt.textContent = l.name;
+        sel.appendChild(opt);
+      });
+    });
+}
+function loadScenes() {
+  fetch('/api/scenes')
+    .then(r => r.json())
+    .then(scenes => {
+      const list = document.getElementById('scenes');
+      list.innerHTML = '';
+      scenes.forEach(s => {
+        const li = document.createElement('li');
+        li.textContent = `Scene ${s.id}: characters ${s.characterIds.join(', ')} at location ${s.locationId} - ${s.description}`;
+        list.appendChild(li);
+      });
+    });
+}
+document.getElementById('sceneForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const characterIds = Array.from(document.querySelectorAll('#characters input:checked')).map(cb => parseInt(cb.value));
+  const locationId = parseInt(document.getElementById('location').value);
+  const description = document.getElementById('description').value;
+  fetch('/api/scenes', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ characterIds, locationId, description })
+  })
+    .then(() => {
+      loadScenes();
+      document.getElementById('description').value = '';
+      document.querySelectorAll('#characters input').forEach(cb => cb.checked = false);
+    });
+});
+loadChars();
+loadLocations();
+loadScenes();
+</script>
+</body>
+</html>
