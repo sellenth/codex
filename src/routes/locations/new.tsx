@@ -15,6 +15,7 @@ import { useState } from 'react'
 import { useMutation } from 'convex/react'
 import { api } from '../../../convex/_generated/api'
 import { ArrowLeft } from 'lucide-react'
+import { ImageGenerator } from '@/components/ImageGenerator'
 
 export const Route = createFileRoute('/locations/new')({
   component: NewLocationPage,
@@ -78,7 +79,10 @@ function NewLocationPage() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="imageUrl">Image URL (Optional)</Label>
-              <Input id="imageUrl" value={formData.imageUrl} onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })} />
+              <Input id="imageUrl" value={formData.imageUrl} onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })} placeholder="Paste an image URL or generate one below" />
+              {formData.imageUrl && (
+                <img src={formData.imageUrl} alt="Location preview" className="w-full max-h-48 object-cover rounded-md" />
+              )}
             </div>
             <div className="space-y-2">
               <Label htmlFor="ambiance">Ambiance</Label>
@@ -101,6 +105,12 @@ function NewLocationPage() {
           </form>
         </CardContent>
       </Card>
+
+      <ImageGenerator
+        onImageGenerated={(imageUrl) => setFormData({ ...formData, imageUrl })}
+        defaultPrompt={formData.name ? `${formData.name} - ${formData.description}` : ''}
+        aspectRatio="16:9"
+      />
     </div>
   )
 }

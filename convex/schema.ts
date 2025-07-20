@@ -15,6 +15,7 @@ export default defineSchema({
     age: v.number(),
     occupation: v.string(),
     bio: v.string(),
+    promptDescription: v.optional(v.string()),
     imageUrl: v.optional(v.string()),
     status: v.string(),
   }),

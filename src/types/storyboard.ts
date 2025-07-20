@@ -4,6 +4,7 @@ export interface Character {
   age: number
   occupation: string
   bio: string
+  promptDescription?: string
   imageUrl: string
   status: 'single' | 'coupled' | 'eliminated'
 }

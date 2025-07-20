@@ -15,6 +15,7 @@ import { useState, useEffect } from 'react'
 import { useMutation, useQuery } from 'convex/react'
 import { api } from '../../convex/_generated/api'
 import { ArrowLeft } from 'lucide-react'
+import { ImageGenerator } from '@/components/ImageGenerator'
 
 export const Route = createFileRoute('/characters/$characterId')({
   component: EditCharacterPage,
@@ -31,6 +32,7 @@ function EditCharacterPage() {
     age: 18,
     occupation: '',
     bio: '',
+    promptDescription: '',
     imageUrl: '',
     status: 'single' as const,
   })
@@ -42,6 +44,7 @@ function EditCharacterPage() {
         age: character.age,
         occupation: character.occupation,
         bio: character.bio,
+        promptDescription: character.promptDescription || '',
         imageUrl: character.imageUrl || '',
         status: character.status as any,
       })
@@ -60,6 +63,7 @@ function EditCharacterPage() {
         age: formData.age,
         occupation: formData.occupation,
         bio: formData.bio,
+        promptDescription: formData.promptDescription || undefined,
         imageUrl: formData.imageUrl || undefined,
         status: formData.status,
       })
@@ -107,8 +111,26 @@ function EditCharacterPage() {
               <Textarea id="bio" rows={4} value={formData.bio} onChange={(e) => setFormData({ ...formData, bio: e.target.value })} required />
             </div>
             <div className="space-y-2">
+              <Label htmlFor="promptDescription">Prompt Description (for AI image generation)</Label>
+              <Textarea 
+                id="promptDescription" 
+                rows={3} 
+                value={formData.promptDescription} 
+                onChange={(e) => setFormData({ ...formData, promptDescription: e.target.value })} 
+                placeholder="Describe the character's appearance for AI image generation. This helps create consistent character portraits."
+              />
+            </div>
+            <div className="space-y-2">
               <Label htmlFor="imageUrl">Image URL (Optional)</Label>
-              <Input id="imageUrl" value={formData.imageUrl} onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })} />
+              <Input 
+                id="imageUrl" 
+                value={formData.imageUrl} 
+                onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })} 
+                placeholder="Paste an image URL or generate one below"
+              />
+              {formData.imageUrl && (
+                <img src={formData.imageUrl} alt="Character preview" className="w-full max-h-48 object-cover rounded-md" />
+              )}
             </div>
             <div className="space-y-2">
               <Label htmlFor="status">Status</Label>
@@ -130,6 +152,13 @@ function EditCharacterPage() {
           </form>
         </CardContent>
       </Card>
+
+      <ImageGenerator
+        onImageGenerated={(imageUrl) => setFormData({ ...formData, imageUrl })}
+        defaultPrompt={formData.promptDescription || `${formData.name}, ${formData.age} years old, ${formData.occupation}. ${formData.bio}`}
+        aspectRatio="1:1"
+        showCard={true}
+      />
     </div>
   )
 }
